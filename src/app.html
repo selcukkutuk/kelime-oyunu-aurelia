@@ -1,0 +1,72 @@
+<template>
+  <require from="./components/harf/harf"></require>
+  <div class="container mt-4">
+    <div class="card mb-4" if.bind="tamamlandi">
+      <div class="card-body">
+        Tebrikler yarışmayı ${ puan } puan ile tamamladınız!
+      </div>
+    </div>
+    <div class="card" if.bind="!mevcutSoru">
+      <div class="card-header">
+        <h5 class="mb-0">Kelime Oyunu Yarışmasına Hoşgeldiniz!</h5>
+      </div>
+      <div class="card-body">
+        Yarışmaya başlamak için yarışmaya başla butonuna basın.
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-primary" click.delegate="basla()">
+          Yarışmaya Başla
+        </button>
+      </div>
+    </div>
+    <div else class="card">
+      <div class="card-header">
+        <h3 class="mb-0">${ mevcutSoru.soru }</h3>
+      </div>
+      <div class="card-body">
+        <div class="d-flex">
+          <harf
+            repeat.for="harf of harfler"
+            acik.two-way="harf.acildi"
+            deger.two-way="harf.harf"
+          ></harf>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="d-flex">
+          <div class="mr-4">Toplam Puan: ${ puan }</div>
+          <div class="mr-4">
+            Kalan Süreniz:
+            <kbd>${ kalanSure }</kbd> saniye
+          </div>
+          <div>Harf Puanı: ${ harfPuan }</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="input-group">
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Cevabınızı yazın"
+            value.two-way="yarismaciCevap"
+            keyup.trigger="yarismaciCevap = yarismaciCevap.toLocaleUpperCase('tr')"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-danger" click.delegate="bitir()">
+              Bitir
+            </button>
+            <button class="btn btn-secondary" click.delegate="harfVer()">
+              Harf Ver
+            </button>
+            <button click.delegate="cevapVer()" class="btn btn-success">
+              Cevap Ver
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer ${mesajClass}" if.bind="mesaj">
+        ${ mesaj }
+      </div>
+    </div>
+  </div>
+</template>
